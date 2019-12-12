@@ -6,14 +6,14 @@ library(plotly)
 library(stringi)
 library(tidyverse)
 
-###########################################
-# DATA
-###########################################
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# DATA ----
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 df <- read_csv("data/WHO_life_expectancy_data_clean.csv")
 
-###########################################
-# PLOTTING FUNCTIONS
-###########################################
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# PLOTTING FUNCTIONS ----
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 #' Make line plots
 #'
@@ -98,7 +98,6 @@ make_line_plot <- function(df, selected_y_axis, selected_countries) {
     config(displayModeBar = FALSE)
 }
 
-#############scatter plot####################
 #' Make scatter plots
 #'
 #' @param df The data frame to create plot with
@@ -137,9 +136,9 @@ make_scatter_plot <- function(df, year_sel=2014, status_sel=list("Developed", "D
 }
 
 
-###########################################
-# APP BOILERPLATE
-###########################################
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# APP BOILERPLATE ----
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 app <- Dash$new()
 
 colours <- list(
@@ -151,9 +150,9 @@ colours <- list(
 )
 
 
-###########################################
-# APP LAYOUT
-###########################################
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# APP LAYOUT ----
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 app$layout(
     htmlDiv(children = list(
         # ROW 1 - HEADER
@@ -226,10 +225,12 @@ app$layout(
               )),
               htmlDiv(className = "row", children = list(
                 htmlDiv(className = "eleven columns", children = list(
+                  htmlBr(),
                   htmlLabel("Select scatter plot year:"),
-                  dccSlider(id="slider_scatter_year", min=min(df$year), max=max(df$year), step=1, value=2015, marks=map(unique(df$year), as.character) %>% setNames(unique(df$year)))	
+                  dccSlider(id="slider_scatter_year", min=min(df$year), max=max(df$year), step=1, value=2015, marks=map(unique(df$year), as.character) %>% setNames(unique(df$year)), included = FALSE)	
                 ))
               )),
+              htmlBr(),
               htmlBr(),
               dccGraph(id = "scatter_plot")
             ))
@@ -250,10 +251,9 @@ app$layout(
   )
 )
 
-###########################################
-# CALL BACKS
-###########################################
-
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# CALL BACKS ----
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 # Line plot - Life expectancy
 app$callback(
     output = list(id = "line_life_expectancy", property = "figure"),
@@ -295,7 +295,7 @@ app$callback(
   }
 )
 
-###########################################
-# RUN APP
-###########################################
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# RUN APP ----
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 app$run_server()
